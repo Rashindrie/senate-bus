@@ -9,24 +9,28 @@ import java.util.concurrent.Semaphore;
 
 public class Bus extends Thread{
     private int busCapacity = 50;
-    
+    private int myId;
+
     private Semaphore mutex;
     private Semaphore  boarded;
     private Semaphore busArrived;
     private BusHalt busHalt;
     
     public Bus(Semaphore mutex, Semaphore boarded, Semaphore busArrived, 
-            BusHalt busHalt, Bus bus){
+            BusHalt busHalt, int myId){
         this.mutex = mutex;
         this.boarded = boarded;
         this.busArrived = busArrived;
         this.busHalt = busHalt;
+        this.myId = myId;
     }
     
     @Override
     public void run(){
         try{
+            System.out.println("Bus arrived: " + myId);
             mutex.acquire();
+            System.out.println("Wating count Before riders get in Bus: " + busHalt.getWaitingCount());
             int n = Math.min(busHalt.getWaitingCount(), busCapacity);
             
             for (int i=0;i<n; i++){
@@ -35,20 +39,17 @@ public class Bus extends Thread{
             }
             
             busHalt.setWaitingCount(Math.max(busHalt.getWaitingCount()-50,0));
+            System.out.println("Wating count After riders get in Bus: " + busHalt.getWaitingCount());
             mutex.release();
             
-            depart(1);            
+            depart(myId);            
             
         }catch(InterruptedException e){
             System.out.println(e);
         }
     }
     
-    public void board(int index){
-        System.out.println("Thread " + index + " Boarded.");
-    }
-    
     public void depart(int index){
-        System.out.println("Bus " + index + " Departed.");
+        System.out.println("Bus Departed: " + index + " \n");
     }
 }
