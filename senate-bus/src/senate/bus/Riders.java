@@ -12,11 +12,11 @@ import java.util.concurrent.Semaphore;
  * @author Admin
  */
 public class Riders extends Thread{
-    private Semaphore mutex;
-    private Semaphore  boarded;
-    private Semaphore busArrived;
-    private Halt busHalt;    
-    private int myId;
+    private final Semaphore mutex;
+    private final Semaphore  boarded;
+    private final Semaphore busArrived;
+    private final Halt busHalt;    
+    private final int myId;
     
     public Riders(Semaphore mutex, Semaphore boarded, Semaphore busArrived, 
         Halt busHalt, int myId){
@@ -46,6 +46,7 @@ public class Riders extends Thread{
     }
     
     public void board(int index){
+        //board bus
         //System.out.println("Thread " + index + " Boarded bus");
     }
 }

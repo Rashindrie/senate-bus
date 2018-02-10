@@ -8,13 +8,13 @@ package senate.bus;
 import java.util.concurrent.Semaphore;
 
 public class Bus extends Thread{
-    private int busCapacity = 50;
-    private int myId;
+    private final int busCapacity = 50;
+    private final int myId;
 
-    private Semaphore mutex;
-    private Semaphore  boarded;
-    private Semaphore busArrived;
-    private Halt busHalt;
+    private final Semaphore mutex;
+    private final Semaphore  boarded;
+    private final Semaphore busArrived;
+    private final Halt busHalt;
     
     public Bus(Semaphore mutex, Semaphore boarded, Semaphore busArrived, 
             Halt busHalt, int myId){
@@ -28,8 +28,8 @@ public class Bus extends Thread{
     @Override
     public void run(){
         try{
-            System.out.println("Bus arrived: " + myId);
             mutex.acquire();
+            System.out.println("Bus arrived: " + myId);
             System.out.println("Wating count Before riders get in Bus: " + busHalt.getWaitingCount());
             int n = Math.min(busHalt.getWaitingCount(), busCapacity);
             
@@ -39,7 +39,7 @@ public class Bus extends Thread{
             }
             
             busHalt.setWaitingCount(Math.max(busHalt.getWaitingCount()-50,0));
-            System.out.println("Wating count After riders get in Bus: " + busHalt.getWaitingCount());
+            System.out.println("Wating count After riders get in Bus: " + busHalt.getWaitingCount() + " \n");
             mutex.release();
             
             depart(myId);            
@@ -50,6 +50,7 @@ public class Bus extends Thread{
     }
     
     public void depart(int index){
-        System.out.println("Bus Departed: " + index + " \n");
+        //bus departs
+        //System.out.println("Bus Departed: " + index + " \n");
     }
 }

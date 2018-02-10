@@ -5,18 +5,15 @@
  */
 package senate.bus;
 
-import java.util.concurrent.Semaphore;
-
-public class Main {
-                        
+public class Main {                   
     public static void main(String[] args) {
         
         Halt busHalt = new Halt();    
                 
-        RidersInitializer ridersGenerator = new RidersInitializer(0, busHalt);
+        RidersInitializer ridersGenerator = new RidersInitializer(busHalt);
         (new Thread(ridersGenerator)).start();
         
-        BusInitializer busGenerator = new BusInitializer(0, busHalt);
+        BusInitializer busGenerator = new BusInitializer(busHalt);
         (new Thread(busGenerator)).start();
     }
  

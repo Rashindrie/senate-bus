@@ -13,15 +13,12 @@ import java.util.Random;
  */
 public class RidersInitializer extends Thread{
     
-    private float arrivalMeanTime;
-    private Halt busHalt;
-    private Bus bus;
-    private Random random = new Random();
-
-    public RidersInitializer(float arrivalMeanTime, Halt busHalt) {
-        this.arrivalMeanTime = arrivalMeanTime;
+    private final Halt busHalt;
+    private final Random random = new Random();
+    private final float ridersMeanArrivalTime = 30F * 1000;
+    
+    public RidersInitializer(Halt busHalt) {
         this.busHalt = busHalt;
-//        this.bus = bus;
     }
 
     @Override
@@ -37,17 +34,16 @@ public class RidersInitializer extends Thread{
                 myID+=1;
                 (new Thread(rider)).start();
 
-                Thread.sleep(100);
-
+                Thread.sleep(getRidersArrivalTime());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public long getExponentiallyDistributedBusInterArrivalTime() {
-        float lambda = 1 / arrivalMeanTime;
-        return Math.round(-Math.log(1 - random.nextFloat()) / lambda);
+    public long getRidersArrivalTime() {
+        float lambda = 1 / ridersMeanArrivalTime;
+        return Math.round(lambda * Math.exp(-1 * random.nextDouble()  * lambda));
     }
     
 }
