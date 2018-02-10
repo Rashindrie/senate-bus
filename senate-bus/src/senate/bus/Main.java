@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Main {                   
     public static void main(String[] args) {
-        
+        System.out.println("----------------- Press Enter to terminate program ----------------- \n");
         Halt busHalt = new Halt();    
         final int simulationSpeedUp = 100;      
         
@@ -19,11 +19,13 @@ public class Main {
         BusInitializer busGenerator = new BusInitializer(busHalt, simulationSpeedUp);
         (new Thread(busGenerator)).start();
         
+        //To terminate the program user can press enter
         Scanner in = new Scanner(System.in);
-        String userInput = in.nextLine();
-            if(userInput != null)
+        String readString = in.nextLine();
+        while(readString!= null) {
+            if (readString.isEmpty()) 
                 System.exit(0);
-    }
- 
-    
+            readString = in.nextLine();
+        }
+    }   
 }
