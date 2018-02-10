@@ -15,11 +15,11 @@ public class Riders extends Thread{
     private Semaphore mutex;
     private Semaphore  boarded;
     private Semaphore busArrived;
-    private busHalt busHalt;
+    private BusHalt busHalt;
     private Bus bus;
     
     public Riders(Semaphore mutex, Semaphore boarded, Semaphore busArrived, 
-            busHalt busHalt, Bus bus){
+            BusHalt busHalt, Bus bus){
         this.mutex = mutex;
         this.boarded = boarded;
         this.busArrived = busArrived;
