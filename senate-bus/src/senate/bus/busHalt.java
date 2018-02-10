@@ -13,17 +13,13 @@ import java.util.concurrent.Semaphore;
  */
 public class busHalt {
     private int waiting = 0;
-    private int busCapacity = 50;
-    
     private final Semaphore mutex = new Semaphore(1);    // Semaphore used to handle access to the waiting variable    
-    private final Semaphore enterQueue = new Semaphore(busCapacity);    // Semaphore to enter queue (multiplex)
-    private final Semaphore busArrived = new Semaphore(0);    // Semaphore to check whether bus has arrived
-    private final Semaphore busDepart = new Semaphore(0);    // Semaphore to check whether bus can depart
-    
-    
+    private final Semaphore boarded = new Semaphore(0);    // Semaphore to enter queue (multiplex)
+    private final Semaphore busArrived = new Semaphore(0);    // Semaphore to check whether bus has arrived 
+   
     //Return semaphore needed to enter waiting area
-    public Semaphore getSemaphoreToEnterQueue() {
-        return enterQueue;
+    public Semaphore getSemaphoreToSignalBoarded() {
+        return boarded;
     }
 
     //Return semaphore needed for signalling arrival of bus
@@ -31,11 +27,6 @@ public class busHalt {
         return busArrived;
     }
     
-    //Return semaphore needed for bus to depart
-    public Semaphore getSemaphoreToSignalBusDeparture() {
-        return busDepart;
-    }
-
     //Return semaphore needed for updating the 'waiting' vairable
     public Semaphore getMutex() {
         return mutex;
@@ -52,8 +43,8 @@ public class busHalt {
     }
 
     //Decrement the waiting count
-    public void decrementWaitingCount() {
-        waiting-=1;
+    public void setWaitingCount(int newVal) {
+        waiting = newVal;
     }  
     
 }
