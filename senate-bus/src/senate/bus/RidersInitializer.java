@@ -42,8 +42,6 @@ public class RidersInitializer extends Thread{
     }
 
     public long getRidersArrivalTime() {
-        float lambda = 1 / ridersMeanArrivalTime;
-        return Math.round(lambda * Math.exp(-1 * random.nextDouble()  * lambda));
-    }
-    
+        return (Math.round(Math.log(1-random.nextDouble()) * (-ridersMeanArrivalTime) ));
+    }    
 }

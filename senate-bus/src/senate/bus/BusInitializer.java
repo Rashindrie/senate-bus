@@ -40,8 +40,6 @@ public class BusInitializer extends Thread{
     }
 
     public long getBusArrivalTime() {
-        float lambda = 1 / busMeanArrivalTime;
-        return Math.round(lambda * Math.exp(-1 * random.nextDouble() * lambda));
-    }
-    
+        return (Math.round(Math.log(1-random.nextDouble()) * (-busMeanArrivalTime) ));
+    }    
 }
