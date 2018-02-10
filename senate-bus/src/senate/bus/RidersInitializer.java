@@ -14,11 +14,11 @@ import java.util.Random;
 public class RidersInitializer extends Thread{
     
     private float arrivalMeanTime;
-    private BusHalt busHalt;
+    private Halt busHalt;
     private Bus bus;
     private Random random = new Random();
 
-    public RidersInitializer(float arrivalMeanTime, BusHalt busHalt) {
+    public RidersInitializer(float arrivalMeanTime, Halt busHalt) {
         this.arrivalMeanTime = arrivalMeanTime;
         this.busHalt = busHalt;
 //        this.bus = bus;

@@ -11,7 +11,7 @@ import java.util.concurrent.Semaphore;
  *
  * @author Admin
  */
-public class busHalt {
+public class Halt {
     private int waiting = 0;
     private final Semaphore mutex = new Semaphore(1);    // Semaphore used to handle access to the waiting variable    
     private final Semaphore boarded = new Semaphore(0);    // Semaphore to enter queue (multiplex)
