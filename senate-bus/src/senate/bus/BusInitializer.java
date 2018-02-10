@@ -16,9 +16,11 @@ public class BusInitializer extends Thread{
     private final Halt busHalt;
     private final Random random = new Random();
     private final float busMeanArrivalTime = 20 * 60F * 1000 ;
-
-    public BusInitializer(Halt busHalt) {
+    private final int speed;
+    
+    public BusInitializer(Halt busHalt, int speed) {
         this.busHalt = busHalt;
+        this.speed = speed;
     }
 
     @Override
@@ -40,6 +42,6 @@ public class BusInitializer extends Thread{
     }
 
     public long getBusArrivalTime() {
-        return (Math.round(Math.log(1-random.nextDouble()) * (-busMeanArrivalTime) ));
+        return (Math.round(Math.log(1-random.nextDouble()) * (-busMeanArrivalTime))/speed);
     }    
 }

@@ -5,16 +5,24 @@
  */
 package senate.bus;
 
+import java.util.Scanner;
+
 public class Main {                   
     public static void main(String[] args) {
         
         Halt busHalt = new Halt();    
-                
-        RidersInitializer ridersGenerator = new RidersInitializer(busHalt);
+        final int simulationSpeedUp = 100;      
+        
+        RidersInitializer ridersGenerator = new RidersInitializer(busHalt, simulationSpeedUp);
         (new Thread(ridersGenerator)).start();
         
-        BusInitializer busGenerator = new BusInitializer(busHalt);
+        BusInitializer busGenerator = new BusInitializer(busHalt, simulationSpeedUp);
         (new Thread(busGenerator)).start();
+        
+        Scanner in = new Scanner(System.in);
+        String userInput = in.nextLine();
+            if(userInput != null)
+                System.exit(0);
     }
  
     
