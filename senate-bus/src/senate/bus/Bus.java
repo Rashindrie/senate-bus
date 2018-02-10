@@ -8,16 +8,15 @@ package senate.bus;
 import java.util.concurrent.Semaphore;
 
 public class Bus extends Thread{
-    private final int busCapacity = 50;
-    private final int myId;
+    private final int busCapacity = 50; //Bus capacity
+    private final int myId;             //Thread Id
 
-    private final Semaphore mutex;
-    private final Semaphore  boarded;
-    private final Semaphore busArrived;
-    private final Halt busHalt;
+    private final Semaphore mutex;      //Semaphore to guard the access to the bus
+    private final Semaphore  boarded;   //Semaphore to signal that a rider boarded the bus
+    private final Semaphore busArrived; //Semaphore to signal that bus has arrived
+    private final Halt busHalt;         //Denotes the waiting Area
     
-    public Bus(Semaphore mutex, Semaphore boarded, Semaphore busArrived, 
-            Halt busHalt, int myId){
+    public Bus(Semaphore mutex, Semaphore boarded, Semaphore busArrived, Halt busHalt, int myId){
         this.mutex = mutex;
         this.boarded = boarded;
         this.busArrived = busArrived;
@@ -28,24 +27,37 @@ public class Bus extends Thread{
     @Override
     public void run(){
         try{
+            //acquire mutex
             mutex.acquire();
-            System.out.println("Bus arrived: " + myId);
-            System.out.println("Wating count Before riders get in Bus: " + busHalt.getWaitingCount());
+            
+            System.out.println("Bus number: " + myId);
+            System.out.println("Riders waiting to get in to Bus: " + busHalt.getWaitingCount());
+            
+            /*
+             * Get the number of riders who can board the bus.
+             * If waiting count >= 50, only 50 is allowed to board the bus
+             * If waiting count < 50, all waitng to board the bus can board it
+            */
             int n = Math.min(busHalt.getWaitingCount(), busCapacity);
             
             for (int i=0;i<n; i++){
-                busArrived.release();
-                boarded.acquire();
+                busArrived.release();   //Signal n times, that the bus has arrived so that n threads can board it
+                boarded.acquire();      //Semaphore to check whether the n thread(s) ackowledged the busArrived signal and boarded the bus
             }
             
+            // Set waiting count to represent the number of threads who were waiting to board the bus but could not board due to bus filling upto capacity
             busHalt.setWaitingCount(Math.max(busHalt.getWaitingCount()-50,0));
-            System.out.println("Wating count After riders get in Bus: " + busHalt.getWaitingCount() + " \n");
+            
+            System.out.println("Riders remaining after bus leaves: " + busHalt.getWaitingCount() + " \n");
+            
+            //release the mutex allowing other riders who were blocked to carry on its work
             mutex.release();
             
+            //depart from the halt
             depart(myId);            
             
         }catch(InterruptedException e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
     

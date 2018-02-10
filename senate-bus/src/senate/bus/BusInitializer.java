@@ -13,10 +13,10 @@ import java.util.Random;
  */
 public class BusInitializer extends Thread{
     
-    private final Halt busHalt;
-    private final Random random = new Random();
-    private final float busMeanArrivalTime = 20 * 60F * 1000 ;
-    private final int speed;
+    private final Halt busHalt;                                 //waiting area
+    private final Random random = new Random();                 //Generate random number
+    private final float busMeanArrivalTime = 20 * 60F * 1000 ;  //mean arrival time - given in problem definition
+    private final int speed;                                    //simulation speed up added
     
     public BusInitializer(Halt busHalt, int speed) {
         this.busHalt = busHalt;
@@ -29,18 +29,28 @@ public class BusInitializer extends Thread{
         int myID = 1;
 
         while (true) {
-            try {          
-                Bus bus = new Bus(busHalt.getMutex(), busHalt.getSemaphoreToSignalBoarded(), busHalt.getSemaphoreToSignalBusArrival(), 
-                    busHalt, myID);
+            try {
+                /*
+                 * create a bus object passing - mutex, SemaphoreToSignalBoarded, SemaphoreToSignalBusArrival, busHalt, and myID
+                */
+                Bus bus = new Bus(busHalt.getMutex(), busHalt.getSemaphoreToSignalBoarded(), busHalt.getSemaphoreToSignalBusArrival(), busHalt, myID);
+                
+                //increment the thread Id count
                 myID+=1;
+                
+                //start running the created bus thread
                 (new Thread(bus)).start();                
+                
+                //set a gap between two consecutive buses using the getBusArrivalTime() function
                 Thread.sleep(getBusArrivalTime());
+                
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    //returns the desired timing gap between two consecutive buses
     public long getBusArrivalTime() {
         return (Math.round(Math.log(1-random.nextDouble()) * (-busMeanArrivalTime))/speed);
     }    

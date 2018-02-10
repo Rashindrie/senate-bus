@@ -12,14 +12,14 @@ import java.util.concurrent.Semaphore;
  * @author Admin
  */
 public class Riders extends Thread{
-    private final Semaphore mutex;
-    private final Semaphore  boarded;
-    private final Semaphore busArrived;
-    private final Halt busHalt;    
-    private final int myId;
+    private final int myId;             //Thread Id
+
+    private final Semaphore mutex;      //Semaphore to guard the access to the bus
+    private final Semaphore  boarded;   //Semaphore to signal that a rider boarded the bus
+    private final Semaphore busArrived; //Semaphore to signal that bus has arrived
+    private final Halt busHalt;         //Denotes the waiting Area
     
-    public Riders(Semaphore mutex, Semaphore boarded, Semaphore busArrived, 
-        Halt busHalt, int myId){
+    public Riders(Semaphore mutex, Semaphore boarded, Semaphore busArrived, Halt busHalt, int myId){
         this.mutex = mutex;
         this.boarded = boarded;
         this.busArrived = busArrived;
@@ -30,18 +30,18 @@ public class Riders extends Thread{
     @Override
     public void run(){
         try {
-            mutex.acquire();
-            busHalt.incrementWaitingCount();
-            mutex.release();
+            mutex.acquire();                    //acquire mutex - a rider can only acquire this if a bus is not already at the halt
+            busHalt.incrementWaitingCount();    //Increment the waiting count
+            mutex.release();                    //release the mutex
           
-            busArrived.acquire();
+            busArrived.acquire();               //Signal that the arrived rider is waiting for the bus
             
-            board(myId);
+            board(myId);                        //Once the bus arrives, board the bus
             
-            boarded.release();
+            boarded.release();                  //Indicate (signal) that the rider boarded the bus after receiving the busArrived signal
             
-        }catch(InterruptedException ex){
-            System.out.println(ex);
+        }catch(InterruptedException e){
+            e.printStackTrace();
         }
     }
     

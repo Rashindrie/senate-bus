@@ -13,9 +13,9 @@ import java.util.concurrent.Semaphore;
  */
 public class Halt {
     private int waiting = 0;
-    private final Semaphore mutex = new Semaphore(1);    // Semaphore used to handle access to the waiting variable    
-    private final Semaphore boarded = new Semaphore(0);    // Semaphore to enter queue (multiplex)
-    private final Semaphore busArrived = new Semaphore(0);    // Semaphore to check whether bus has arrived 
+    private final Semaphore mutex = new Semaphore(1);       // Semaphore used to handle access to the waiting variable    
+    private final Semaphore boarded = new Semaphore(0);     // Semaphore to indicate that a rider boarded the bus
+    private final Semaphore busArrived = new Semaphore(0);  // Semaphore to signal whether bus has arrived 
    
     //Return semaphore needed to enter waiting area
     public Semaphore getSemaphoreToSignalBoarded() {
