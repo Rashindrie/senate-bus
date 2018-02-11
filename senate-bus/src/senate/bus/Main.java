@@ -11,22 +11,22 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("\n ----------------- Press Enter to terminate program ----------------- \n\n");
         
-        Halt busHalt = new Halt();              //  Initialize a waiting bus halt
+        Halt halt = new Halt();                 //  Initialize a waiting bus halt
         final int simulationSpeedUp = 100;      //  Set a simulation speed to execute the program fast. Use simulationSpeedUp = 1 to execute the program normally
         
-        // Initialize riders passing the halt and the speedUp parameters
-        RidersInitializer ridersGenerator = new RidersInitializer(busHalt, simulationSpeedUp);
+        // Initialize riders
+        RidersInitializer ridersInitializer = new RidersInitializer(halt, simulationSpeedUp);
         
-        //run the rider Generator thread
-        (new Thread(ridersGenerator)).start();
+        // Run the rider Initializer thread
+        (new Thread(ridersInitializer)).start();
         
-        // Initialize the buses passing the halt and the speedUp parameters
-        BusInitializer busGenerator = new BusInitializer(busHalt, simulationSpeedUp);
+        // Initialize the buses
+        BusInitializer busInitializer = new BusInitializer(halt, simulationSpeedUp);
         
-        //run the bus Generator thread
-        (new Thread(busGenerator)).start();
+        // Run the bus Initializer thread
+        (new Thread(busInitializer)).start();
         
-        //To terminate the program user can press "Enter"
+        // To terminate the program user can press "Enter"
         Scanner in = new Scanner(System.in);
         String readString = in.nextLine();
         while(readString!= null) {

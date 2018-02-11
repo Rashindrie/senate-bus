@@ -42,17 +42,15 @@ public class RidersInitializer extends Thread{
                 //start running the created rider thread
                 (new Thread(rider)).start();
 
-                //set a gap between two consecutive riders using the getRidersArrivalTime() function
-                Thread.sleep(getRidersArrivalTime());
+                //returns the desired timing gap between two consecutive riders
+                long riderArrivalTime = Math.round(Math.log(1-random.nextDouble()) * (-ridersMeanArrivalTime) )/speed;
+                        
+                //set a gap between two consecutive riders using the riderArrivalTime value
+                Thread.sleep(riderArrivalTime);
                 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
-
-    //returns the desired timing gap between two consecutive riders
-    public long getRidersArrivalTime() {
-        return (Math.round(Math.log(1-random.nextDouble()) * (-ridersMeanArrivalTime) )/speed);
-    }    
 }

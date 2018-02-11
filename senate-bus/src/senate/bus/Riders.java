@@ -45,8 +45,8 @@ public class Riders extends Thread{
         }
     }
     
+    //board bus
     public void board(int index){
-        //board bus
         //System.out.println("Thread " + index + " Boarded bus");
     }
 }

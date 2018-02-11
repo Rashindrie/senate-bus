@@ -41,17 +41,15 @@ public class BusInitializer extends Thread{
                 //start running the created bus thread
                 (new Thread(bus)).start();                
                 
-                //set a gap between two consecutive buses using the getBusArrivalTime() function
-                Thread.sleep(getBusArrivalTime());
+                //denotes the desired timing gap between two consecutive buses
+                long busArrivalTime = Math.round(Math.log(1-random.nextDouble()) * (-busMeanArrivalTime))/speed;
+                
+                //set a gap between two consecutive buses using the busArrivalTime value
+                Thread.sleep(busArrivalTime);
                 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    //returns the desired timing gap between two consecutive buses
-    public long getBusArrivalTime() {
-        return (Math.round(Math.log(1-random.nextDouble()) * (-busMeanArrivalTime))/speed);
     }    
 }

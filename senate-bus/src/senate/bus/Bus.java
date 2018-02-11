@@ -11,7 +11,7 @@ public class Bus extends Thread{
     private final int busCapacity = 50; //Bus capacity
     private final int myId;             //Thread Id
 
-    private final Semaphore mutex;      //Semaphore to guard the access to the bus
+    private final Semaphore mutex;      //Semaphore to guard the access 'waiting' variable
     private final Semaphore  boarded;   //Semaphore to signal that a rider boarded the bus
     private final Semaphore busArrived; //Semaphore to signal that bus has arrived
     private final Halt busHalt;         //Denotes the waiting Area
@@ -36,7 +36,7 @@ public class Bus extends Thread{
             /*
              * Get the number of riders who can board the bus.
              * If waiting count >= 50, only 50 is allowed to board the bus
-             * If waiting count < 50, all waitng to board the bus can board it
+             * If waiting count < 50, all waiting to board the bus can board it
             */
             int n = Math.min(busHalt.getWaitingCount(), busCapacity);
             
